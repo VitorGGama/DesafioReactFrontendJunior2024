@@ -12,7 +12,9 @@ type Task = {
 const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
-  const [filter, setFilter] = useState('todos');
+  const [filter, setFilter] = useState('all');
+  const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
+  const [editingTaskTitle, setEditingTaskTitle] = useState('');
 
   useEffect(() => {
     const savedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
@@ -40,10 +42,21 @@ const App: React.FC = () => {
     setTasks(tasks.filter(task => !task.completed));
   };
 
+  const startEditingTask = (id: string, title: string) => {
+    setEditingTaskId(id);
+    setEditingTaskTitle(title);
+  };
+
+  const saveEditedTask = (id: string) => {
+    setTasks(tasks.map(task => task.id === id ? { ...task, title: editingTaskTitle } : task));
+    setEditingTaskId(null);
+    setEditingTaskTitle('');
+  };
+
   const filteredTasks = tasks.filter(task => {
-    if (filter === 'todos') return true;
-    if (filter === 'ativos') return !task.completed;
-    if (filter === 'completos') return task.completed;
+    if (filter === 'all') return true;
+    if (filter === 'active') return !task.completed;
+    if (filter === 'completed') return task.completed;
     return true;
   });
 
@@ -51,14 +64,14 @@ const App: React.FC = () => {
     <Router>
       <section className="todoapp">
         <header className="header">
-          <h1>Tarefas</h1>
+          <h1>todos</h1>
           <input
             className="new-todo"
             placeholder="O que precisa ser feito?"
             value={newTaskTitle}
             onChange={(e) => setNewTaskTitle(e.target.value)}
             onKeyPress={(e) => {
-              if (e.key === 'Enter' && newTaskTitle.trim()) {
+              if ( e.key === 'Enter' && newTaskTitle.trim()) {
                 addTask(newTaskTitle.trim());
                 setNewTaskTitle('');
               }
@@ -66,9 +79,23 @@ const App: React.FC = () => {
           />
         </header>
         <section className="main">
+          <input
+            id="toggle-all"
+            className="toggle-all"
+            type="checkbox"
+            onChange={(e) => {
+              const { checked } = e.target;
+              setTasks(tasks.map(task => ({ ...task, completed: checked })));
+            }}
+            checked={tasks.length > 0 && tasks.every(task => task.completed)}
+          />
+          <label htmlFor="toggle-all">Mark all as complete</label>
           <ul className="todo-list">
             {filteredTasks.map(task => (
-              <li key={task.id} className={task.completed ? 'completed' : ''}>
+              <li
+                key={task.id}
+                className={`${task.completed ? 'completed' : ''} ${editingTaskId === task.id ? 'editing' : ''}`}
+              >
                 <div className="view">
                   <input
                     className="toggle"
@@ -76,9 +103,24 @@ const App: React.FC = () => {
                     checked={task.completed}
                     onChange={() => toggleTask(task.id)}
                   />
-                  <label>{task.title}</label>
+                  <label onDoubleClick={() => startEditingTask(task.id, task.title)}>
+                    {task.title}
+                  </label>
                   <button className="destroy" onClick={() => removeTask(task.id)} />
                 </div>
+                {editingTaskId === task.id && (
+                  <input
+                    className="edit"
+                    value={editingTaskTitle}
+                    onChange={(e) => setEditingTaskTitle(e.target.value)}
+                    onBlur={() => saveEditedTask(task.id)}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        saveEditedTask(task.id);
+                      }
+                    }}
+                  />
+                )}
               </li>
             ))}
           </ul>
@@ -89,24 +131,26 @@ const App: React.FC = () => {
           </span>
           <ul className="filters">
             <li>
-              <Link to="/" className={filter === 'todos' ? 'selected' : ''} onClick={() => setFilter('todos')}>
+              <Link to="/" className={filter === 'all' ? 'selected' : ''} onClick={() => setFilter('all')}>
                 Todos
               </Link>
             </li>
             <li>
-              <Link to="/ativos" className={filter === 'ativos' ? 'selected' : ''} onClick={() => setFilter('ativos')}>
+              <Link to="/active" className={filter === 'active' ? 'selected' : ''} onClick={() => setFilter('active')}>
                 Ativos
               </Link>
             </li>
             <li>
-              <Link to="/completos" className={filter === 'completos' ? 'selected' : ''} onClick={() => setFilter('completos')}>
+              <Link to="/completed" className={filter === 'completed' ? 'selected' : ''} onClick={() => setFilter('completed')}>
                 Completos
               </Link>
             </li>
           </ul>
-          <button className="clear-completed" onClick={clearCompleted}>
-            Limpar completados
-          </button>
+          {tasks.some(task => task.completed) && (
+            <button className="clear-completed" onClick={clearCompleted}>
+              Limpar completos
+            </button>
+          )}
         </footer>
       </section>
     </Router>
