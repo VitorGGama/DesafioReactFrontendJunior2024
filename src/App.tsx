@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router,  Link, } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 
