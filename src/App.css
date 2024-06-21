@@ -1,0 +1,217 @@
+/* App.css */
+body {
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.4em;
+  background: #f5f5f5;
+  color: #4d4d4d;
+  min-width: 230px;
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 0 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  font-weight: 300;
+}
+
+.todoapp {
+  background: #fff;
+  margin: 130px 0 40px 0;
+  position: relative;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
+    0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.todoapp h1 {
+  font-size: 100px;
+  font-weight: 100;
+  text-align: center;
+  color: rgba(175, 47, 47, 0.15);
+  margin: 0;
+  padding: 20px;
+}
+
+.new-todo,
+.edit {
+  width: 100%;
+  font-size: 24px;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: 1.4em;
+  border: none;
+  padding: 16px;
+  box-sizing: border-box;
+  box-shadow: inset 0 -1px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.new-todo {
+  padding-left: 60px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid #e6e6e6;
+}
+
+.main {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid #e6e6e6;
+}
+
+.toggle-all {
+  display: none;
+}
+
+.todo-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.todo-list li {
+  position: relative;
+  font-size: 24px;
+  border-bottom: 1px solid #ededed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 15px 15px 60px;
+  transition: background-color 0.3s ease;
+}
+
+.todo-list li:hover {
+  background-color: #f9f9f9;
+}
+
+.todo-list li:last-child {
+  border-bottom: none;
+}
+
+.todo-list li.editando {
+  border-bottom: none;
+  padding: 0;
+}
+
+.todo-list li.editando .edit {
+  display: block;
+  width: calc(100% - 43px);
+  padding: 12px 16px;
+  margin: 0 0 0 43px;
+}
+
+.todo-list li.editando .view {
+  display: none;
+}
+
+.toggle {
+  appearance: none;
+  width: 40px;
+  height: 40px;
+  margin: auto 0;
+  border: 1px solid #ededed;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  transition: border-color 0.3s ease;
+}
+
+.toggle:checked {
+  background-color: #85d6a5;
+  border-color: #85d6a5;
+}
+
+.toggle:checked + label {
+  text-decoration: line-through;
+  color: #d9d9d9;
+}
+
+label {
+  word-break: break-all;
+  padding: 15px 15px 15px 60px;
+  display: block;
+  line-height: 1.2em;
+  transition: color 0.3s ease;
+}
+
+.destroy {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  font-size: 24px;
+  color: #cc9a9a;
+  margin-left: 10px;
+  cursor: pointer;
+  display: none;
+  transition: color 0.3s ease;
+}
+
+.todo-list li:hover .destroy {
+  display: block;
+}
+
+.destroy:hover {
+  color: #af5b5e;
+}
+
+.footer {
+  padding: 10px 15px;
+  height: 20px;
+  text-align: center;
+  font-size: 14px;
+  border-top: 1px solid #e6e6e6;
+  color: #777;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.todo-count {
+  text-align: left;
+}
+
+.filters {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+}
+
+.filters li {
+  cursor: pointer;
+}
+
+.filters a {
+  color: inherit;
+  text-decoration: none;
+  padding: 3px 7px;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+.filters a:hover {
+  background-color: rgba(175, 47, 47, 0.1);
+}
+
+.filters .selected {
+  border: 1px solid rgba(175, 47, 47, 0.2);
+}
+
+.clear-completed {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #af5b5e;
+  transition: color 0.3s ease;
+}
+
+.clear-completed:hover {
+  color: #a94442;
+}
